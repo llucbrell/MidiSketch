@@ -15,6 +15,7 @@ function MidiObject(){
 
 
 
+
 //getters & setters
  MidiObject.prototype.getTrack= function(id){
   return this.tracks_array[id];
@@ -320,6 +321,75 @@ function MidiSketch(command, SketchObject){
 
     }
   }  
+
+
+  function MidiToBinarySketch(SketchObject, filename){
+
+
+    var textToWrite= MidiSketch("write", SketchObject);
+
+       function destroyClickedElement(event)
+       {
+       document.body.removeChild(event.target);
+       }
+
+
+      //create an unsigned array
+      var byteArray = new Uint8Array(textToWrite.length/2);
+      //translate the string to binary
+              for (var x = 0; x < byteArray.length; x++){
+              byteArray[x] = parseInt(textToWrite.substr(x*2,2), 16);
+              }
+
+
+       var nombrearchivo= filename;
+        //create a blob
+       var textFileAsBlob = new Blob([byteArray], {type: "application/octet-stream"});
+       //console.log("texto"+);
+       var fileNameToSaveAs = nombrearchivo +".mid";
+       //document.getElementById("tituloguion").value;
+       //create a downloadable link
+        var downloadLink = document.createElement("a");
+        downloadLink.download = fileNameToSaveAs;
+        downloadLink.innerHTML = "Download File";
+
+       //test for the navigator agent to apply different sintax
+        var ie = navigator.userAgent.match(/MSIE\s([\d.]+)/),
+        ie11 = navigator.userAgent.match(/Trident\/7.0/) && navigator.userAgent.match(/rv:11/),
+        ieVer=(ie ? ie[1] : (ie11 ? 11 : -1));
+
+            if (ie && ieVer<10) {
+       // console.log("No blobs on IE ver<10");
+             alert("Your navigator is not compatible with Blob API, please update it to a newer version or you can't download midi.");
+              return;
+             }
+
+
+              if (ie || ie11) {//IE solution.. thanks StackOverflow
+              window.navigator.msSaveBlob(textFileAsBlob, fileNameToSaveAs);
+             } else {
+                    var downloadLink = document.createElement("a");
+                   downloadLink.download = fileNameToSaveAs;
+                    downloadLink.innerHTML = "Download File";
+
+                   if (window.webkitURL != null) {
+            // Chrome allows the link to be clicked
+            // without actually adding it to the DOM.
+                   downloadLink.href = window.webkitURL.createObjectURL(textFileAsBlob);
+                 } else {
+            // Firefox requires the link to be added to the DOM
+            // before it can be clicked. //Solucion motor GECO 
+                downloadLink.href = window.URL.createObjectURL(textFileAsBlob);
+                downloadLink.onclick = destroyClickedElement;
+                downloadLink.style.display = "none";
+                document.body.appendChild(downloadLink);
+                 }
+
+         downloadLink.click();
+         }
+
+
+  }
 
 
 
