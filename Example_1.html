@@ -1,0 +1,133 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+    <script src="MidiSketch.js"></script>
+	</head>
+	<body>
+<h1>Escribe archivos midi de forma sencilla!!!!</h1>		
+<pre>
+
+//A midi file has formed by a header chunk + some tracks. 
+//Each track has many midi messages.. remember, for a good
+//construction build from small to big
+// MidiMessage, MidiMessage2...--> MidiTrack1, MidiTrack2..--> MidiObject+ setChunk -->show, write, stored, etc.,
+
+
+//for testing create 3 objects MidiSketch, notes and messages
+var sketch= new MidiObject();
+var pianoTrack= new MidiTrack();
+var DonoteOn= new MidiMessage("noteOn");
+var RenoteOn= new MidiMessage("noteOn","3e");//hexadecimal notation, can be used decimal notation too
+var sketch2= new MidiObject();
+var sketch3= new MidiObject();
+var fin= new MidiMessage("endTrack");
+var DonoteOff= new MidiMessage("noteOff");
+var RenoteOff= new MidiMessage("noteOff", "3e");
+var fluteTrack= new MidiTrack();
+
+
+
+//use functions for add messages to the Tracks
+
+
+pianoTrack.addMessageToTrack(DonoteOn);
+pianoTrack.addMessageToTrack(DonoteOff);
+pianoTrack.addMessageToTrack(RenoteOn);
+pianoTrack.addMessageToTrack(RenoteOff);
+pianoTrack.addMessageToTrack(DonoteOn);
+pianoTrack.addMessageToTrack(DonoteOff);
+pianoTrack.addMessageToTrack(RenoteOn);
+pianoTrack.addMessageToTrack(RenoteOff);
+pianoTrack.addMessageToTrack(fin);
+//dont forget the end of the track for a correct midi sinth working.
+fluteTrack.addMessageToTrack(new MidiMessage("noteOn"));
+
+
+//Set the header and tracks  into the MidiSketch Object
+sketch.setChunk();
+sketch2.setChunk();
+sketch2.addTrack(pianoTrack);
+sketch2.addTrack(fluteTrack);
+sketch3.setChunk();
+sketch3.addTrack(pianoTrack);
+sketch3.addTrack(pianoTrack);
+
+//write it into a file
+
+
+
+</pre>
+
+<h2>3 objetos MidiSketch</h2>
+<p>Usa la consola e inspecciona los objetos MidiSketch, usanod la función, MidiSketch("write", sketch) sketch1, 2 o 3... y te devuelve un string de números en base 64. Es decir hexadecimales listos para ser reproducidos por un sintetizador midi.</p> 
+<p>Gracias por usar esta librería</p>
+
+
+
+<script type="text/javascript">
+//for testing 
+var sketch= new MidiObject();
+var pianoTrack= new MidiTrack();
+var DonoteOn= new MidiMessage("noteOn");
+var RenoteOn= new MidiMessage("noteOn","3e");
+var sketch2= new MidiObject();
+var sketch3= new MidiObject();
+var fin= new MidiMessage("endTrack");
+var DonoteOff= new MidiMessage("noteOff");
+var RenoteOff= new MidiMessage("noteOff", "3e");
+
+var fluteTrack= new MidiTrack();
+
+sketch.setChunk();
+
+//pianoTrack.MidiSketch.prototype.addMessageToTrack(DonoteOn);
+pianoTrack.addMessageToTrack(DonoteOn);
+pianoTrack.addMessageToTrack(DonoteOff);
+pianoTrack.addMessageToTrack(RenoteOn);
+pianoTrack.addMessageToTrack(RenoteOff);
+pianoTrack.addMessageToTrack(DonoteOn);
+pianoTrack.addMessageToTrack(DonoteOff);
+pianoTrack.addMessageToTrack(RenoteOn);
+pianoTrack.addMessageToTrack(RenoteOff);
+pianoTrack.addMessageToTrack(fin);
+fluteTrack.addMessageToTrack(new MidiMessage("noteOn"));
+
+//sketch.addTrack(pianoTrack);
+
+sketch2.setChunk();
+sketch2.addTrack(pianoTrack);
+sketch2.addTrack(fluteTrack);
+sketch3.setChunk();
+sketch3.addTrack(pianoTrack);
+sketch3.addTrack(pianoTrack);
+//.addTrack(pianoTrack).addMessageToTrack(DonoteOn);
+
+//alert(sketch);
+//alert(sketch2);
+//alert(sketch3);
+       
+
+// console.log("valores array " +sketch.tracks_array +"y "+sketch.total_tracks);
+
+
+ /*Future implementations    
+//getters and Setters
+     Track.prototype.getMidiEvents= function(trackid){
+     	return this.midi_events_array[trackid];
+     }
+      Track.prototype.getNumberOfMidiE=function(){
+      	return this.total_track_events;
+      } 
+
+ };
+
+*/
+
+
+
+</script>
+
+
+	</body>
+</html>
