@@ -166,9 +166,13 @@ MidiTrack.prototype.addMessageToTrack= function (MidiMessage){
         _ceros="000000";
          console.log("2 "+ this.track_length);
       } 
-       if(_tracklengthNum>256){
+       if(_tracklengthNum>255 && _tracklengthNum<4096){
         _ceros="00000";
          console.log("3 "+ this.track_length);
+      }
+      if(_tracklengthNum>4095){
+        _ceros="0000";
+         console.log("4"+ this.track_length);
       }
 
 
